@@ -7,6 +7,18 @@
 			"path": "github.com/go-errors/errors",
 			"revision": "8fa88b06e5974e97fbf9899a7f86a344bfd1f105",
 			"revisionTime": "2016-12-05T22:32:45Z"
+		},
+		{
+			"checksumSHA1": "c7jHQZk5ZEsFR9EXsWJXkszPBZA=",
+			"path": "github.com/russross/blackfriday",
+			"revision": "5f33e7b7878355cd2b7e6b8eefc48a5472c69f70",
+			"revisionTime": "2016-10-03T16:27:22Z"
+		},
+		{
+			"checksumSHA1": "kbgJvKG3NRoqU91rYnXGnyR+8HQ=",
+			"path": "github.com/shurcooL/sanitized_anchor_name",
+			"revision": "1dba4b3954bc059efc3991ec364f9f9a35f597d2",
+			"revisionTime": "2016-09-18T04:11:01Z"
 		}
 	],
 	"rootPath": "go.rls.moe/jmmasw"

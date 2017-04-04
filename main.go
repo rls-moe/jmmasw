@@ -1,23 +1,23 @@
 package main
 
 import (
-	"flag"
-	"log"
-	"io/ioutil"
-	"encoding/json"
-	"path/filepath"
-	"os"
-	"html/template"
 	"bytes"
+	"encoding/json"
+	"flag"
+	"html/template"
 	"io"
+	"io/ioutil"
+	"log"
+	"os"
+	"path/filepath"
 	"strings"
 )
 
 var (
-	projectDir = flag.String("dir", ".", "Project directory")
-	dataFile = flag.String("data", "./data.json", "Variable Data File")
+	projectDir      = flag.String("dir", ".", "Project directory")
+	dataFile        = flag.String("data", "./data.json", "Variable Data File")
 	failMissingData = flag.Bool("ignore-no-data", true, "Ignore a missing Data Files")
-	outDir = flag.String("static-out", "./jasw-out", "Static Output of Website")
+	outDir          = flag.String("static-out", "./jasw-out", "Static Output of Website")
 )
 
 func main() {
@@ -27,9 +27,9 @@ func main() {
 		log.Fatal("Error in template loader: ", err)
 		return
 	}
-	var data interface{}
+	var data = map[string]interface{}{}
 	if !*failMissingData {
-		if _,err := os.Stat(*dataFile); os.IsNotExist(err) {
+		if _, err := os.Stat(*dataFile); os.IsNotExist(err) {
 			log.Fatal("Data file missing")
 			return
 		}
@@ -57,14 +57,21 @@ func main() {
 
 	log.Println("Running all Templates")
 	for _, v := range t.Templates() {
-		func (v *template.Template) {
+		func(v *template.Template) {
 			if v.Name() == "root" {
+				return
+			}
+			if strings.HasSuffix(v.Name(), ".tmpl") {
 				return
 			}
 			var buf = bytes.NewBuffer([]byte{})
 			err = v.Execute(buf, data)
 			if err != nil {
-				log.Fatal("Error executing template: ", err)
+				log.Print("Error executing template: ", err)
+				if err, ok := err.(*template.Error); ok {
+					log.Fatal("Error on line ", err.Line,
+						"\n", err.Description)
+				}
 				return
 			}
 
@@ -75,12 +82,13 @@ func main() {
 
 			curFile := filepath.Join(outDirAbs, v.Name())
 			if _, err := os.Stat(filepath.Dir(curFile)); os.IsNotExist(err) {
-				if err := os.MkdirAll(filepath.Dir(curFile), 0700); err != nil {
+				if err := os.MkdirAll(filepath.Dir(curFile), 0755); err != nil {
 					log.Fatal("Error while creating dir structure: ", err)
 					return
 				}
 			}
-			file, err := os.Create(curFile)
+			//file, err := os.Create(curFile)
+			file, err := os.OpenFile(curFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 			if err != nil {
 				log.Fatal("Error creating file: ", err)
 				return
@@ -90,6 +98,7 @@ func main() {
 			_, err = io.Copy(file, buf)
 			if err != nil {
 				log.Fatal(err)
+				return
 			}
 		}(v)
 	}
