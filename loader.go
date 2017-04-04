@@ -12,7 +12,7 @@ import (
 
 var (
 	extWhitelist = []string{
-		".html", ".js", ".css", ".tmpl",
+		".html", ".tmpl",
 	}
 )
 
