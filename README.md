@@ -35,7 +35,7 @@ and `text/template`.
 If you're wondering why this tool exists: I made it so I can generate my website for
 multiple languages without having to copy-paste half the website all the time.
 
-I considered Hugo, which is an excellent static page generator but it is also way to
+I considered Hugo, which is an excellent static page generator but it is also way too
 complicated for this application. JMMASW works with "raw" HTML templates and makes
 no assumption about your website.
 
