@@ -20,6 +20,11 @@ var (
 	outDir          = flag.String("static-out", "./jasw-out", "Static Output of Website")
 )
 
+const (
+	folderPerm = 0755
+	filePerm   = 0644
+)
+
 func main() {
 	flag.Parse()
 	t, err := LoadTemplatesAtPath(*projectDir)
@@ -48,7 +53,7 @@ func main() {
 	}
 	outDirAbs, err := filepath.Abs(*outDir)
 	if _, err := os.Stat(outDirAbs); os.IsNotExist(err) {
-		err = os.MkdirAll(outDirAbs, 0700)
+		err = os.MkdirAll(outDirAbs, folderPerm)
 		if err != nil {
 			log.Fatal("Error while creating output directory: ", err)
 			return
@@ -88,7 +93,7 @@ func main() {
 				}
 			}
 			//file, err := os.Create(curFile)
-			file, err := os.OpenFile(curFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
+			file, err := os.OpenFile(curFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, filePerm)
 			if err != nil {
 				log.Fatal("Error creating file: ", err)
 				return
