@@ -40,4 +40,4 @@ complicated for this application. JMMASW works with "raw" HTML templates and mak
 no assumption about your website.
 
 You can take your website as it is now and provided it doesn't contain invalid
-go-template code, it will come out the other end of JMMASW without change.
+go-template code, it will come out the other end of JMMASW without a change.
